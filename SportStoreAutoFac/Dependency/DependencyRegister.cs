@@ -12,8 +12,12 @@ namespace SportStoreAutoFac.Dependency
     {
         protected override void Load(ContainerBuilder builder) {
             builder.RegisterType<TestService>().As<ITestService>().InstancePerLifetimeScope();
-            builder.RegisterType<EFOrderRepository>().As<IOrderRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<EFStoreRepository>().As<IStoreRepository>().InstancePerLifetimeScope();
+
+            builder.RegisterGeneric(typeof(EfRepository<>)).As(typeof(IAsyncRepository<>)).InstancePerLifetimeScope();
+
+
+            //builder.RegisterType<EFOrderRepository>().As<IOrderRepository>().InstancePerLifetimeScope();
+            //builder.RegisterType<EFStoreRepository>().As<IStoreRepository>().InstancePerLifetimeScope();
         }
     }
 }

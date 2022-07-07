@@ -4,6 +4,7 @@ using SportStoreAutoFac.Models;
 using SportStoreAutoFac.Services;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using SportStoreAutoFac.Data;
 
 namespace SportStoreAutoFac.Controllers
@@ -12,20 +13,21 @@ namespace SportStoreAutoFac.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ITestService _testService;
-        private readonly IStoreRepository _storeRepository;
+        private readonly IAsyncRepository<Product> _productRepository;
 
         public HomeController(ILogger<HomeController> logger,
             ITestService testService,
-            IStoreRepository storeRepository) {
+            IAsyncRepository<Product> productRepository) {
             _logger = logger;
             _testService = testService;
-            _storeRepository = storeRepository;
+            _productRepository = productRepository;
         }
 
-        public IActionResult Index() {
-            var model = _storeRepository.Products;
-            
-            return View();
+        public async Task<IActionResult> Index() {
+            IEnumerable<Product> model;
+            model = await _productRepository.GetAll();
+
+            return View(model);
         }
 
         [HttpGet("TestList")]

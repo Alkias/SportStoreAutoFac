@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SportStoreAutoFac.Models;
 
 namespace SportStoreAutoFac.Services
@@ -16,7 +13,7 @@ namespace SportStoreAutoFac.Services
         #region Implementation of ITestService
 
         public List<TestModel> GetTestList() {
-            List<TestModel> list = new List<TestModel>() {
+            List<TestModel> list = new List<TestModel> {
                 new TestModel {Id = 1, Name = "test1"},
                 new TestModel {Id = 2, Name = "test2"},
                 new TestModel {Id = 3, Name = "test3"},

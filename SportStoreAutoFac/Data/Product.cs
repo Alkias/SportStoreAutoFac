@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SportStoreAutoFac.Data {
-
-    public class Product:BaseEntity {
-        //[Key]
-        //public int Id { get; set; }
-
+namespace SportStoreAutoFac.Data
+{
+    public class Product : BaseEntity
+    {
         [Required(ErrorMessage = "Please enter a product name")]
         public string Name { get; set; }
 
@@ -14,8 +12,7 @@ namespace SportStoreAutoFac.Data {
         public string Description { get; set; }
 
         [Required]
-        [Range(0.01, double.MaxValue,
-            ErrorMessage = "Please enter a positive price")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Please enter a positive price")]
         [Column(TypeName = "decimal(8, 2)")]
         public decimal Price { get; set; }
 

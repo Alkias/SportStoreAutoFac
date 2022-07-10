@@ -1,5 +1,3 @@
-using System;
-
 namespace SportStoreAutoFac.Models
 {
     public class ErrorViewModel

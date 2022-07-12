@@ -8,6 +8,14 @@ namespace SportStoreAutoFac.UI.Paging
 {
     //seeL https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/intro?view=aspnetcore-5.0
     //see: https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/sort-filter-page?view=aspnetcore-5.0
+    public interface IPaginatedList
+    {
+        int PageIndex { get; }
+        int TotalPages { get; }
+        bool HasPreviousPage { get; }
+        bool HasNextPage { get; }
+    }
+
     /// <summary>
     /// To add paging to the Students Index page, you'll create a PaginatedList class that uses
     /// Skip and Take statements to filter data on the server instead of always retrieving all rows of the table.
@@ -15,7 +23,7 @@ namespace SportStoreAutoFac.UI.Paging
     /// The following illustration shows the paging buttons.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PaginatedList<T> : List<T>
+    public class PaginatedList<T> : List<T>, IPaginatedList
     {
         #region Ctor
 

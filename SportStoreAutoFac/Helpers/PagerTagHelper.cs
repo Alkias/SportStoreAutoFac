@@ -4,18 +4,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using SportStoreAutoFac.Models.ViewModels;
+using SportStoreAutoFac.UI.Paging;
 
-namespace SportStoreAutoFac.Infrastructure
+namespace SportStoreAutoFac.Helpers
 {
-    [HtmlTargetElement("div", Attributes = "page-model")]
-    public class PageLinkTagHelper : TagHelper
+    public class PagerTagHelper : TagHelper
     {
         private IUrlHelperFactory urlHelperFactory;
 
-        public PageLinkTagHelper(IUrlHelperFactory helperFactory) {
-            urlHelperFactory = helperFactory;
+        public PagerTagHelper(IUrlHelperFactory urlHelperFactory) {
+            this.urlHelperFactory = urlHelperFactory;
         }
+
+        public IPaginatedList Source { get; set; }
 
         // The ViewContext object is the object that provides access to things like the HttpContext,
         // HttpRequest, HttpResponse and so on.
@@ -31,43 +32,41 @@ namespace SportStoreAutoFac.Infrastructure
         // If not, you can omit the ViewContext property and associated attributes from your TagHelper.
         // It's certainly not a required property for a TagHelper and
         // most of my own tag helpers so far have not needed access to it.
-        [HtmlAttributeNotBound] 
+        [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
 
-        public PagingInfo PageModel { get; set; }
+        public Dictionary<string, object> PageUrlValues { get; set; }
+            = new Dictionary<string, object>();
 
         public string PageAction { get; set; }
 
-        [HtmlAttributeName(DictionaryAttributePrefix = "page-url-")]
-
-        public Dictionary<string, object> PageUrlValues { get; set; } 
-            = new Dictionary<string, object>();
-
         public bool PageClassesEnabled { get; set; } = false;
-       
+
         public string PageClass { get; set; }
-        
+
         public string PageClassNormal { get; set; }
-        
+
         public string PageClassSelected { get; set; }
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
-        {
+        public int CurrentPage { get; set; }
+
+        public override void Process(TagHelperContext context,
+            TagHelperOutput output) {
+            output.TagName = "div";
+            output.Attributes.Add("class", PageClass);
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             TagBuilder result = new TagBuilder("div");
-            
-            for (int i = 1; i <= PageModel.TotalPages; i++)
-            {
+
+            for (int i = 1; i <= Source.TotalPages; i++) {
                 TagBuilder tag = new TagBuilder("a");
-                PageUrlValues["productPage"] = i;
+                PageUrlValues["pageIndex"] = i;
                 tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
-                
-                if (PageClassesEnabled)
-                {
-                    tag.AddCssClass(PageClass);
-                    tag.AddCssClass(i == PageModel.CurrentPage
+
+                if (PageClassesEnabled) {
+                    tag.AddCssClass(i == CurrentPage
                         ? PageClassSelected
                         : PageClassNormal);
+                    tag.AddCssClass("item");
                 }
 
                 tag.InnerHtml.Append(i.ToString());

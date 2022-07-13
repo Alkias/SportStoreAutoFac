@@ -32,7 +32,7 @@
 
 
 
-@{
+@*@{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
@@ -56,4 +56,11 @@
    asp-route-pageIndex="@(Model.PageIndex + 1)"
    class="btn btn-default @nextDisabled">
     Next
-</a>
+</a>*@
+
+
+<pager-new
+    source="Model"
+    current-page="@Model.PageIndex"
+    page-action="Index">
+</pager-new>
